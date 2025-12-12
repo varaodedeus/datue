@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - AuthGuard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f6fa;
+            min-height: 100vh;
+        }
+        nav {
+            background: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        nav h1 { color: #667eea; }
+        nav button {
+            padding: 10px 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .content {
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .welcome {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .welcome h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .welcome p {
+            color: #666;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <h1>AuthGuard</h1>
+        <div>
+            <span id="username"></span>
+            <button onclick="logout()">Sair</button>
+        </div>
+    </nav>
+    
+    <div class="content">
+        <div class="welcome">
+            <h2>Bem-vindo ao AuthGuard! 🎉</h2>
+            <p>Sistema funcionando perfeitamente!</p>
+            <p style="margin-top: 20px;">Em breve: gerenciamento de projetos e keys...</p>
+        </div>
+    </div>
+
+    <script>
+        let token = localStorage.getItem('token');
+
+        if (!token) {
+            window.location.href = '/';
+        }
+
+        // Decodificar JWT simples (sem verificação)
+        try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            document.getElementById('username').textContent = payload.username;
+        } catch(e) {
+            logout();
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
